@@ -133,7 +133,7 @@
                       <Component id="lblDir" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txtDirC" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="190" max="32767" attributes="0"/>
+                  <EmptySpace pref="140" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnPedido" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>
                       <Component id="btnSalir" alignment="3" min="-2" pref="51" max="-2" attributes="0"/>

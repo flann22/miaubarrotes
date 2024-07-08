@@ -6,11 +6,7 @@ import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.table.DefaultTableModel;
 
 public final class Tienda extends javax.swing.JFrame {
 
@@ -21,17 +17,13 @@ public final class Tienda extends javax.swing.JFrame {
      * Crea una nueva instancia de Tienda y conecta a la base de datos.
      */
     
-    //DefaultTableModel model = new DefaultTableModel();
+    
     
     public Tienda() {
         conectar();
         initComponents();
         setLocationRelativeTo(null);
-        //llenarCombo();
         
-        /*String datos [] = {"Nombre del Producto","Precio","Stock"};
-        model.setColumnIdentifiers(datos);
-        tblProductos.setModel(model);*/
     }
 
     /**
@@ -48,13 +40,7 @@ public final class Tienda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error en la conexión: " + ex.getMessage(), "Error", 2);
         }
     }
-    
-    private void mostrarImagen() {
-        ImageIcon icono = new ImageIcon(getClass().getResource("/resources/gato estirao-Photoroom.png")); // Ruta relativa desde el paquete del proyecto
-        JLabel imagenLabel = new JLabel(icono);
-        jPanel1.add(imagenLabel); // Asumiendo que jPanel1 es el panel donde quieres mostrar la imagen
-    }
-    
+
     public void guardar(String rut, String nombre, String fono, String dir){
         String insert="INSERT INTO cliente(rut,nombre,fono,dir) VALUES ('"+rut+"','"+nombre+"','"+fono+"','"+dir+"')";
         try{
@@ -228,7 +214,7 @@ public final class Tienda extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDir)
                     .addComponent(txtDirC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -250,7 +236,6 @@ public final class Tienda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-                                        
         if (conex != null) {
             try {
                 conex.close();

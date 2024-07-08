@@ -1,7 +1,6 @@
 package Miaubarrotes;
 
 import java.awt.Color;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -10,6 +9,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
+import javax.swing.DefaultListModel;
 
 
  /*
@@ -18,20 +18,42 @@ import java.sql.PreparedStatement;
 public final class Productos extends javax.swing.JFrame {
     
     DefaultTableModel model = new DefaultTableModel();
-    DefaultListModel<String> carritoModel = new DefaultListModel<>();
+    DefaultListModel<String> listModel = new DefaultListModel<>();
     Statement st;
+    private int totalVentas = 0;
     
     public Productos() {
         initComponents();
         llenarTabla();
         setLocationRelativeTo(null);
         
+        lstCarrito.setModel(listModel);
         
-        String pro [] = {"Nombre del Producto","Precio","Stock"};     
+        //una forma de llamar a las columnas
+        /*String pro [] = {"Nombre del Producto","Precio","Stock"};     
         model.setColumnIdentifiers(pro);
-        tblProductos.setModel(model);
-        lstCarrito.setModel(carritoModel);
+        tblProductos.setModel(model);*/
+        
+        
+        txtProductos.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            @Override
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                filtroProductos();
+            }
+
+            @Override
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                filtroProductos();
+            }
+
+            @Override
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                filtroProductos();
+            }
+        });
     }
+    
+    
     
 
 
@@ -151,13 +173,10 @@ public final class Productos extends javax.swing.JFrame {
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 tblProductosMouseExited(evt);
             }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblProductosMousePressed(evt);
-            }
         });
         jScrollPane2.setViewportView(tblProductos);
 
-        btnIrProo.setText("Proovedores");
+        btnIrProo.setText("Ver Empleados");
         btnIrProo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIrProoActionPerformed(evt);
@@ -184,9 +203,9 @@ public final class Productos extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 442, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 116, Short.MAX_VALUE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnIrProo, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(128, 128, 128)))
@@ -197,18 +216,17 @@ public final class Productos extends javax.swing.JFrame {
                             .addComponent(rbtEfectivo, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(btnAgregarCa)))
+                            .addComponent(btnAgregarCa)
+                            .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(16, 16, 16))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(txtProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGap(27, 27, 27)
                                 .addComponent(btnBuscarP))
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap(218, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -222,7 +240,7 @@ public final class Productos extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnBuscarP))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -249,7 +267,7 @@ public final class Productos extends javax.swing.JFrame {
                     .addComponent(btnPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnIrProo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -268,10 +286,12 @@ public final class Productos extends javax.swing.JFrame {
 
     private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
         this.setVisible(false);
+        //Tienda tienda = new Tienda();
+        //tienda.setVisible(true);
     }//GEN-LAST:event_btnVolverActionPerformed
 
     private void rbtEfectivoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtEfectivoItemStateChanged
-       
+        // TODO add your handling code here:
         if(rbtEfectivo.isSelected()){
             btnPagar.setEnabled(true);
         }else{
@@ -280,7 +300,7 @@ public final class Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtEfectivoItemStateChanged
 
     private void rbtCreditoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtCreditoItemStateChanged
-        
+        // TODO add your handling code here:
         if(rbtCredito.isSelected()){
             btnPagar.setEnabled(true);
         }else{
@@ -289,7 +309,6 @@ public final class Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtCreditoItemStateChanged
 
     private void rbtDebitoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbtDebitoMouseExited
-       
         jPanel1.setBackground(Color.cyan);
     }//GEN-LAST:event_rbtDebitoMouseExited
 
@@ -298,7 +317,7 @@ public final class Productos extends javax.swing.JFrame {
     }//GEN-LAST:event_rbtDebitoMouseMoved
 
     private void rbtDebitoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_rbtDebitoItemStateChanged
-        
+
         if(rbtDebito.isSelected()){
             btnPagar.setEnabled(true);
         }else{
@@ -308,6 +327,8 @@ public final class Productos extends javax.swing.JFrame {
 
 
     private void btnPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPagarActionPerformed
+
+        
         String selec;
         if(rbtDebito.isSelected()){
             selec = "Debito";
@@ -318,12 +339,19 @@ public final class Productos extends javax.swing.JFrame {
         }else{
             selec = "ninguna forma de pago seleccionada";
         }
-        JOptionPane.showMessageDialog(null, "Forma de pago: " + selec, "Total a pagar:", 1);
+        JOptionPane.showMessageDialog(null, "Cliente: " + "\nAtendido por:" + "\nTotal a pagar: $" + totalVentas + "\nForma de pago: " + selec, "Boleta", 1);
+        listModel.clear();
+        totalVentas = 0;
+        btnPagar.setText("Pagar"); 
     }//GEN-LAST:event_btnPagarActionPerformed
 
+
+   
+    
     private void btnIrProoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIrProoActionPerformed
-        Proovedor prov = new Proovedor();
-        prov.setVisible(true);
+        Empleados emp = new Empleados();
+        emp.setVisible(true);
+        this.setVisible(false);
         
     }//GEN-LAST:event_btnIrProoActionPerformed
 
@@ -337,179 +365,148 @@ public final class Productos extends javax.swing.JFrame {
 
     private void btnAgregarCaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarCaActionPerformed
         int item_selec = tblProductos.getSelectedRow();
-                if (item_selec != -1) {
-                    String nom_producto = tblProductos.getValueAt(item_selec, 0).toString();
-                    String precio = tblProductos.getValueAt(item_selec, 1).toString();
 
-                    // Agregar al JList
-                    carritoModel.addElement(nom_producto + " - " + precio);
+        if (item_selec != -1) { // Verificar si se ha seleccionado una fila
+            String nom_producto = tblProductos.getValueAt(item_selec, 0).toString(); // Nombre del producto
+            int precio = Integer.parseInt(tblProductos.getValueAt(item_selec, 1).toString()); // Precio del producto
+            int stock = Integer.parseInt(tblProductos.getValueAt(item_selec, 2).toString()); // Stock del producto
 
-                    // Agregar a la base de datos
-                    agregarProductoCarrito(nom_producto, Double.parseDouble(precio));
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se ha seleccionado ningun Producto", "Productos", 1);
-                }
-    }//GEN-LAST:event_btnAgregarCaActionPerformed
-    private void agregarProductoCarrito(String nom_producto, double precio) {
-        try (Connection conex = Conexion.getConnection()) {
-            String query = "INSERT INTO carrito (nom_producto, precio) VALUES (?, ?)";
-            try (PreparedStatement ps = conex.prepareStatement(query)) {
-                ps.setString(1, nom_producto);
-                ps.setDouble(2, precio);
-                ps.executeUpdate();
+            // Verificar si hay suficiente stock
+            if (stock > 0) {
+                // Crear el String con el nombre y el precio del producto
+                String producto_info = nom_producto + " $" + precio;
+
+                // Agregar el producto al JList del carrito
+                listModel.addElement(producto_info);
+
+                // Actualizar el total de ventas sumando el precio del producto
+                totalVentas += precio;
+
+                // Mostrar el total de ventas actualizado en un JLabel (suponiendo que tienes un JLabel llamado lblTotalVentas)
+                btnPagar.setText("Total de ventas: $" + totalVentas);
+
+                // Reducir el stock del producto seleccionado
+                stock--;
+
+                // Actualizar el stock en la tabla (JTable) o en la base de datos
+                tblProductos.setValueAt(stock, item_selec, 2); // Actualizar en la tabla de productos
+
+                // Aquí deberías llamar a un método o función para actualizar el stock en la base de datos
+                // Por ejemplo, podrías tener un método como actualizarStockProducto(nom_producto, stock);
+
+                // Actualizar la tabla de productos (si es necesario)
+                llenarTabla(); // Esto debería refrescar la tabla de productos si se modifica el stock en la base de datos
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay suficiente stock disponible.", "Productos", JOptionPane.ERROR_MESSAGE);     
             }
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al agregar al carrito: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se ha seleccionado ningún Producto", "Productos", JOptionPane.ERROR_MESSAGE);
         }
-    }
-    /*
-    private double obtenerPrecioProducto(String producto) {
-  
-        double precio = 0.0;
-        try {
-            String query = "SELECT precio FROM producto WHERE nom_producto = '" + producto + "'";
-            ResultSet rs = st.executeQuery(query);
-            if (rs.next()) {
-            precio = rs.getDouble("precio");
-            }   
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error al obtener precio: " + ex, "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return precio;
-    }*/
-    
-    
-    
-    
-    private void tblProductosMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMousePressed
-        
-    }//GEN-LAST:event_tblProductosMousePressed
+    }//GEN-LAST:event_btnAgregarCaActionPerformed
 
     private void lstCarritoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_lstCarritoKeyPressed
         JOptionPane.showMessageDialog(rootPane, "Hola");
     }//GEN-LAST:event_lstCarritoKeyPressed
 
     private void btnBuscarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPActionPerformed
-        
         String buscarP = txtProductos.getText();
-        
         BuscarProducto(buscarP);
+        
     }//GEN-LAST:event_btnBuscarPActionPerformed
-   
-/*
-public void BuscarProducto(String buscarP) {
-    try (Connection conex = Conexion.getConnection()) {
-        // DefaultTableModel model = (DefaultTableModel) tblProductos.getModel(); // Descomentar si `model` está definido fuera del método
-        
-        // Limpiar todas las filas existentes
-        model.setRowCount(0);
-        
-        // Asegurarse de que las columnas están configuradas
-        if (model.getColumnCount() == 0) {
-            model.addColumn("nom_producto");
-            model.addColumn("precio");
-            model.addColumn("stock");
-        }
-        
-        // Preparar la consulta SQL
-        String query = "SELECT nom_producto, precio, stock FROM producto WHERE nom_producto = ?";
-        try (PreparedStatement ps = conex.prepareStatement(query)) {
-            ps.setString(1, buscarP);
-            try (ResultSet lista = ps.executeQuery()) {
-                // Crear un array para almacenar los datos de cada fila
-                Object[] prod = new Object[3];
-                
-                // Recorrer los resultados de la consulta
-                while (lista.next()) {
-                    prod[0] = lista.getString("nom_producto");
-                    prod[1] = lista.getInt("precio");
-                    prod[2] = lista.getInt("stock");
-                    
-                    // Agregar una nueva fila al modelo de la tabla
-                    model.addRow(prod);
-                }
-            }
-        }
-        
-        // Establecer el modelo actualizado en la tabla
-        tblProductos.setModel(model);
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Algo anda mal: " + ex.getMessage(), "Conexión", JOptionPane.ERROR_MESSAGE);
-    }
-}*/
-    public void BuscarProducto(String buscarP) {
-    if (buscarP == null || buscarP.trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre de producto para buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    
-    try (Connection conex = Conexion.getConnection()) {
-        // Preparar la consulta SQL
-        String query = "SELECT nom_producto, precio, stock FROM producto WHERE nom_producto = ?";
-        try (PreparedStatement ps = conex.prepareStatement(query)) {
-            ps.setString(1, buscarP);
-            try (ResultSet lista = ps.executeQuery()) {
-                // Comprobar si el ResultSet está vacío
-                if (!lista.isBeforeFirst()) {
-                    JOptionPane.showMessageDialog(null, "Producto no encontrado.", "Resultado de la búsqueda", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    // Limpiar todas las filas existentes
-                    DefaultTableModel model = (DefaultTableModel) tblProductos.getModel();
-                    model.setRowCount(0);
 
-                    // Asegurarse de que las columnas están configuradas
-                    if (model.getColumnCount() == 0) {
-                        model.addColumn("nom_producto");
-                        model.addColumn("precio");
-                        model.addColumn("stock");
-                    }
-
-                    // Crear un array para almacenar los datos de cada fila
-                    Object[] prod = new Object[3];
-                    
-                    // Recorrer los resultados de la consulta
-                    while (lista.next()) {
-                        prod[0] = lista.getString("nom_producto");
-                        prod[1] = lista.getInt("precio");
-                        prod[2] = lista.getInt("stock");
-                        
-                        // Agregar una nueva fila al modelo de la tabla
-                        model.addRow(prod);
-                    }
-                    // Establecer el modelo actualizado en la tabla
-                    tblProductos.setModel(model);
-                }
-            }
-        }
-    } catch (SQLException ex) {
-        JOptionPane.showMessageDialog(null, "Algo anda mal: " + ex.getMessage(), "Conexión", JOptionPane.ERROR_MESSAGE);
-    }
-}
-
-    
-    
     public void llenarTabla() {
-        try (Connection conex = Conexion.getConnection()) {
+        try (Connection conex = Conexion.getConnection()){       
+            // Limpiar todas las filas existentes
             model.setRowCount(0);
+        
+            // Asegurarse de que las columnas están configuradas
             if (model.getColumnCount() == 0) {
-                model.addColumn("nom_producto");
-                model.addColumn("precio");
-                model.addColumn("stock");
+                model.addColumn("Nombre del Producto");
+                model.addColumn("Precio");
+                model.addColumn("Stock");
             }
+        
+            // Ejecutar la consulta SQL
             st = conex.createStatement();
             ResultSet lista = st.executeQuery("SELECT nom_producto, precio, stock FROM producto");
+        
+            // Crear un array para almacenar los datos de cada fila
             Object[] prod = new Object[3];
+        
+            // Recorrer los resultados de la consulta
             while (lista.next()) {
                 prod[0] = lista.getString("nom_producto");
                 prod[1] = lista.getInt("precio");
                 prod[2] = lista.getInt("stock");
+            
+                // Agregar una nueva fila al modelo de la tabla
                 model.addRow(prod);
             }
+            
+            // Establecer el modelo actualizado en la tabla
             tblProductos.setModel(model);
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Algo anda mal: " + ex.getMessage(), "Conexión", JOptionPane.ERROR_MESSAGE);
-        }   
+        }      
     }
+    
+    
+    private void filtroProductos() {
+        
+        String buscarP = txtProductos.getText().trim();
+        if (buscarP.isEmpty()) {
+            llenarTabla(); // Si el campo de búsqueda está vacío, mostrar todos los productos
+        } else {
+            BuscarProducto(buscarP); // Si hay texto en el campo, realizar la búsqueda
+        }
+    }
+    
+    public void BuscarProducto(String buscarP) {       
+        if (buscarP == null || buscarP.trim().isEmpty()){       
+            JOptionPane.showMessageDialog(null, "Por favor, ingrese un nombre de producto para buscar.", "Advertencia", 2);           
+            return;         
+        }
+        try (Connection conex = Conexion.getConnection()) {
+            // Preparar la consulta SQL
+            String select = "SELECT nom_producto, precio, stock FROM producto WHERE nom_producto = ?";
+            try (PreparedStatement ps = conex.prepareStatement(select)) {
+                ps.setString(1, buscarP);
+                try (ResultSet lista = ps.executeQuery()) {
+                    // Comprobar si el ResultSet está vacío
+                    if (!lista.isBeforeFirst()) {
+                        JOptionPane.showMessageDialog(null, "Producto no encontrado.", "Resultado de la búsqueda", 2);
+                    } else {
+                        // Limpiar todas las filas existentes
+                        model.setRowCount(0);
+                        // Asegurarse de que las columnas están configuradas, es para colocarle nombre a las columnas
+                        if (model.getColumnCount() == 0) {
+                            model.addColumn("Nombre del Producto");
+                            model.addColumn("Precio");
+                            model.addColumn("Stock");
+                        }
+                        // Crear un array para almacenar los datos de cada fila
+                        Object[] prod = new Object[3];
+                    
+                        // Recorrer los resultados de la consulta
+                        while (lista.next()) {
+                            prod[0] = lista.getString("nom_producto");
+                            prod[1] = lista.getInt("precio");
+                            prod[2] = lista.getInt("stock");
+                        
+                            // Agregar una nueva fila al modelo de la tabla
+                            model.addRow(prod);
+                        }
+                        // Establecer el modelo actualizado en la tabla
+                        tblProductos.setModel(model);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Algo anda mal: " + ex.getMessage(), "Conexión", 3);
+        }
+    }
+    
 
     
 public static void main(String args[]) {

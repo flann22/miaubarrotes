@@ -52,12 +52,12 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" attributes="0">
                                   <Component id="jScrollPane2" min="-2" pref="442" max="-2" attributes="0"/>
-                                  <EmptySpace pref="79" max="32767" attributes="0"/>
+                                  <EmptySpace pref="116" max="32767" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="btnPagar" min="-2" pref="98" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="btnPagar" min="-2" pref="157" max="-2" attributes="0"/>
                                   <EmptySpace max="32767" attributes="0"/>
                                   <Component id="btnIrProo" min="-2" pref="120" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
@@ -70,10 +70,8 @@
                               <Component id="rbtEfectivo" min="-2" pref="98" max="-2" attributes="0"/>
                               <Component id="jLabel6" min="-2" pref="65" max="-2" attributes="0"/>
                               <Component id="jLabel5" alignment="0" min="-2" pref="72" max="-2" attributes="0"/>
-                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                                  <Component id="btnVolver" min="-2" pref="98" max="-2" attributes="0"/>
-                                  <Component id="btnAgregarCa" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="btnAgregarCa" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btnVolver" alignment="0" min="-2" pref="98" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       </Group>
@@ -81,12 +79,12 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="txtProductos" min="-2" pref="341" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                                   <Component id="btnBuscarP" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jLabel2" alignment="0" min="-2" pref="102" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="218" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -105,9 +103,9 @@
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="txtProductos" min="-2" pref="32" max="-2" attributes="0"/>
-                      <Component id="btnBuscarP" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txtProductos" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Component id="btnBuscarP" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
@@ -137,7 +135,7 @@
                       <Component id="btnVolver" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                       <Component id="btnIrProo" alignment="3" min="-2" pref="49" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="29" max="32767" attributes="0"/>
+                  <EmptySpace pref="57" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -285,7 +283,6 @@
               <Events>
                 <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductosMouseEntered"/>
                 <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductosMouseExited"/>
-                <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tblProductosMousePressed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -294,7 +291,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnIrProo">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Proovedores"/>
+            <Property name="text" type="java.lang.String" value="Ver Empleados"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnIrProoActionPerformed"/>
