@@ -1,12 +1,10 @@
 package Miaubarrotes;
 
+import javax.swing.*;
 import java.awt.Color;
-import javax.swing.JOptionPane;
-import java.sql.Connection;
-import java.sql.Statement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import javax.swing.BorderFactory;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 import javax.swing.DefaultListModel;
@@ -21,8 +19,10 @@ public final class Productos extends javax.swing.JFrame {
     DefaultListModel<String> listModel = new DefaultListModel<>();
     Statement st;
     private int totalVentas = 0;
+    private String clienteSeleccionado;
     
-    public Productos() {
+    public Productos(String clienteSeleccionado) {
+        this.clienteSeleccionado = clienteSeleccionado;
         initComponents();
         llenarTabla();
         setLocationRelativeTo(null);
@@ -33,7 +33,7 @@ public final class Productos extends javax.swing.JFrame {
         /*String pro [] = {"Nombre del Producto","Precio","Stock"};     
         model.setColumnIdentifiers(pro);
         tblProductos.setModel(model);*/
-        
+       
         
         txtProductos.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
@@ -339,7 +339,7 @@ public final class Productos extends javax.swing.JFrame {
         }else{
             selec = "ninguna forma de pago seleccionada";
         }
-        JOptionPane.showMessageDialog(null, "Cliente: " + "\nAtendido por:" + "\nTotal a pagar: $" + totalVentas + "\nForma de pago: " + selec, "Boleta", 1);
+        JOptionPane.showMessageDialog(null, "Cliente: "+ clienteSeleccionado + "\nAtendido por:" + "\nTotal a pagar: $" + totalVentas + "\nForma de pago: " + selec, "Boleta", 1);
         listModel.clear();
         totalVentas = 0;
         btnPagar.setText("Pagar"); 

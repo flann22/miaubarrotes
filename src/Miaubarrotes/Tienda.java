@@ -1,17 +1,20 @@
 package Miaubarrotes;
 
 
+import Miaubarrotes.Productos;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 
 public final class Tienda extends javax.swing.JFrame {
 
     Connection conex;
     Statement st;
+    private javax.swing.JComboBox<String> comboClientes;
 
     /**
      * Crea una nueva instancia de Tienda y conecta a la base de datos.
@@ -23,7 +26,7 @@ public final class Tienda extends javax.swing.JFrame {
         conectar();
         initComponents();
         setLocationRelativeTo(null);
-        
+        cargarClientes();
     }
 
     /**
@@ -51,6 +54,17 @@ public final class Tienda extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"no se insertaron los datos" + ex,"insert",2);
         }
     }
+    public void cargarClientes(){
+       comboClientes.removeAllItems(); // Limpiar comboClientes antes de cargar nuevos datos
+        String query = "SELECT nombre FROM cliente";
+        try (Statement st = conex.createStatement(); ResultSet rs = st.executeQuery(query)) {
+            while (rs.next()) {
+                comboClientes.addItem(rs.getString("nombre"));
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error al cargar clientes: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -71,6 +85,9 @@ public final class Tienda extends javax.swing.JFrame {
         lblRut = new javax.swing.JLabel();
         txtRut = new javax.swing.JTextField();
         btnActualizar = new javax.swing.JButton();
+        comboClientes = new javax.swing.JComboBox<>();
+        jlblAgregar = new javax.swing.JLabel();
+        jLblselectrut = new javax.swing.JLabel();
 
         jToggleButton1.setText("jToggleButton1");
 
@@ -156,6 +173,17 @@ public final class Tienda extends javax.swing.JFrame {
             }
         });
 
+        comboClientes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboClientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboClientesActionPerformed(evt);
+            }
+        });
+
+        jlblAgregar.setText("O Agregue o modifique cliente");
+
+        jLblselectrut.setText("Seleccione rut cliente");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -170,11 +198,19 @@ public final class Tienda extends javax.swing.JFrame {
                         .addGap(48, 48, 48))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblNomC, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblFono, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblDir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRut, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblDir, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(8, 8, 8)
+                                        .addComponent(lblFono, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGap(13, 13, 13)
+                                        .addComponent(lblRut, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(36, 36, 36))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(lblNomC, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtNombreC)
                             .addComponent(txtFonoC)
@@ -189,32 +225,50 @@ public final class Tienda extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(211, 211, 211))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(237, 237, 237)
+                        .addComponent(jLblselectrut))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(171, 171, 171)
+                        .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(210, 210, 210)
+                        .addComponent(jlblAgregar)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLblselectrut)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(comboClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jlblAgregar)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblRut)
-                    .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(4, 4, 4)
+                    .addComponent(txtRut, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblRut))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(lblNomC)
-                        .addComponent(txtNombreC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtNombreC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblNomC)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblFono)
+                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtFonoC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lblFono))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDir)
-                    .addComponent(txtDirC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
+                    .addComponent(txtDirC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblDir))
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPedido, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -249,8 +303,9 @@ public final class Tienda extends javax.swing.JFrame {
 
     //mostrara la ventana productos
     private void btnPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPedidoActionPerformed
-        Productos producto = new Productos();
-        producto.setVisible(true);
+        String nombreClienteSeleccionado = (String) comboClientes.getSelectedItem();
+        Productos productos = new Productos(nombreClienteSeleccionado);
+        productos.setVisible(true);
         //this.setVisible(false);
     }//GEN-LAST:event_btnPedidoActionPerformed
 
@@ -308,6 +363,12 @@ public final class Tienda extends javax.swing.JFrame {
         lblRut.setForeground(Color.blue);
     }//GEN-LAST:event_txtRutFocusLost
 
+    private void comboClientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboClientesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboClientesActionPerformed
+
+}
+
 public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -344,10 +405,13 @@ public static void main(String args[]) {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnPedido;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JComboBox<String> comboClientes;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLblselectrut;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JLabel jlblAgregar;
     private javax.swing.JLabel lblDir;
     private javax.swing.JLabel lblFono;
     private javax.swing.JLabel lblNomC;
